@@ -2,7 +2,7 @@ from flask import Flask
 from flask_restful import Api
 from flask_jwt import JWT
 from os import environ
-from resources.car import Car, CarList
+from resources.car import Car, CarList, CarPosition
 from resources.driver import Driver
 from resources.user import UserRegister
 from security import authenticate, identity
@@ -45,6 +45,7 @@ api.add_resource(AssignDriverToCar, '/assign')
 api.add_resource(Fleet, '/fleet/<string:name>')
 api.add_resource(FleetList, '/fleets')
 api.add_resource(CarFleet, '/car_fleet')
+api.add_resource(CarPosition, '/car/<string:plate>/position')
 
 # ha kézzel indítanánk python-nal, akkor lefutna emiatt a kód miatt
 if __name__ == '__main__':

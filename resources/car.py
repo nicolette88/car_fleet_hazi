@@ -1,6 +1,32 @@
 from flask_restful import Resource, reqparse
 from models.car import CarModel
+from models.position import PositionModel
 from flask_jwt import jwt_required
+
+
+class CarPosition(Resource):
+  parser = reqparse.RequestParser()
+  parser.add_argument('latitude',
+                      type=float,
+                      required=True,
+                      help='The latitude field can not be blank!')
+  parser.add_argument('longitude',
+                      type=float,
+                      required=True,
+                      help='The longitude field can not be blank!')
+
+  def post(self, plate):
+    if (CarModel.find_by_attributes(license_plate=plate)) is None:
+      return {'message': f'The {plate} plate is not exists'}, 404
+    # létező autó és rendszám esetén:
+    data = CarPosition.parser.parse_args()
+    car = CarModel.find_by_attributes(license_plate=plate)
+    car_position = PositionModel(car.id, data['latitude'], data['longitude'])
+    try:
+      car_position.save_to_db()
+    except Exception:
+      return {'message': 'error during database communication...'}, 400
+    return {'message': 'car_position is saved to database...'}, 201
 
 
 class CarList(Resource):
