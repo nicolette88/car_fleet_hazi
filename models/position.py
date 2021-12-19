@@ -1,8 +1,9 @@
 from db import db, BaseModel
 from sqlalchemy.sql.functions import now
+from models.model_mixin import MixinModel
 
 
-class PositionModel(BaseModel):
+class PositionModel(BaseModel, MixinModel):
   __tablename__ = 'positions'
 
   id = db.Column(db.Integer, primary_key=True)
@@ -26,3 +27,13 @@ class PositionModel(BaseModel):
       db.session.commit()
     except Exception as e:
       print(f'hiba történt az adatbázisba való mentéskor: {e}')
+
+  def json(self):
+    car_position_json = {
+        'id': self.id,
+        'date': self.date.isoformat(),
+        'latitude': self.latitude,
+        'longitude': self.longitude,
+        'car_id': self.car_id,
+    }
+    return car_position_json

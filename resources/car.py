@@ -15,6 +15,22 @@ class CarPosition(Resource):
                       required=True,
                       help='The longitude field can not be blank!')
 
+  def get(self, plate):
+    if (CarModel.find_by_attributes(license_plate=plate)) is None:
+      return {'message': f'The {plate} plate is not exists'}, 404
+    car = CarModel.find_by_attributes(license_plate=plate)
+    car_positions = []
+    for pos_data in PositionModel.query.all():
+      tmp_data = pos_data.json()
+      if car.id == tmp_data['car_id']:
+        # mivel a JSON-nál úgy döntöttem hogy mindent visszadok, mert 'car_id'-t is szűrésre használom, így új listát hozok létre a megjelenítésre
+        car_positions.append({
+            'longitude': tmp_data['longitude'],
+            'latitude': tmp_data['latitude'],
+            'date': tmp_data['date']
+        })
+    return {'car_positions': car_positions}
+
   def post(self, plate):
     if (CarModel.find_by_attributes(license_plate=plate)) is None:
       return {'message': f'The {plate} plate is not exists'}, 404
