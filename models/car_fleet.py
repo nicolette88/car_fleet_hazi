@@ -12,8 +12,3 @@ class CarFleetLink(BaseModel, MixinModel):
   def __init__(self, car_id, fleet_id):
     self.car_id = car_id
     self.fleet_id = fleet_id
-
-  @classmethod
-  def link_exists(cls, car_id, fleet_id):
-    link = cls.query.filter_by(car_id=car_id, fleet_id=fleet_id).first()
-    return link

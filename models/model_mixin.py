@@ -9,3 +9,7 @@ class MixinModel():
   def delete_from_db(self):
     db.session.delete(self)
     db.session.commit()
+
+  @classmethod
+  def find_by_attributes(cls, **kwargs):
+    return cls.query.filter_by(**kwargs).first()

@@ -1,7 +1,8 @@
+from models.model_mixin import MixinModel
 from db import db, BaseModel
 
 
-class CarModel(BaseModel):
+class CarModel(BaseModel, MixinModel):
   __tablename__ = 'cars'
   id = db.Column(db.Integer, primary_key=True)
   license_plate = db.Column(db.String(7))
@@ -45,11 +46,3 @@ class CarModel(BaseModel):
       db.session.commit()
     except Exception as e:
       print(f'hiba történt az adatbázisba való mentéskor: {e}')
-
-  @classmethod
-  def find_by_plate(cls, plate):
-    return cls.query.filter_by(license_plate=plate).first()
-
-  @classmethod
-  def find_by_id(cls, id):
-    return cls.query.filter_by(id=id).first()
