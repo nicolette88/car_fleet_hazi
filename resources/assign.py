@@ -47,3 +47,26 @@ class AssignDriverToCar(Resource):
         "message":
         f"Driver {driver.name} was assigned to car: {car.license_plate}."
     }, 201
+
+  def delete(self):
+    data = AssignDriverToCar.parser.parse_args()
+
+    driver = DriverModel.find_by_attributes(id=data['driver_id'])
+    if not driver:
+      return {"message": "Driver does not exist"}, 404
+    car = CarModel.find_by_attributes(id=data['car_id'])
+    if not car:
+      return {"message": "Car does not exist"}, 404
+
+    if car.driver_id == driver.id:
+      car.driver_id = None
+      try:
+        car.save_to_db()
+      except Exception:
+        return {'message': 'error during database communication...'}, 400
+    else:
+      return {"message": "This assignment does not exist"}, 404
+    return {
+        "message":
+        f"Driver {driver.name} was removed from car {car.license_plate}"
+    }, 201
