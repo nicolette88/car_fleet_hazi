@@ -1,7 +1,7 @@
 from db import db, BaseModel
 from sqlalchemy.sql.functions import now
 from models.model_mixin import MixinModel
-# ahogy jeleztem az importnál valamilyen okból a következő üzenetet dobja a VSC: Import "geopy.geocoders" could not be resolved
+# ahogy jeleztem az importnál valamilyen okból a következő warningot dobja a VSC: Import "geopy.geocoders" could not be resolved
 # lehet a VSC-ban valamelyik bővítmény okozza nem jöttem rá. :(  A működést nem befolyásolja. :)
 from geopy.geocoders import Nominatim
 
