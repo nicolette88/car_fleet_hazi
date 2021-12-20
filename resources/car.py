@@ -16,6 +16,18 @@ class CarPosition(Resource):
                       help='The longitude field can not be blank!')
 
   def get(self, plate):
+    # print('Getter !!!!!!!!!!!!!!')
+    # if (CarModel.find_by_attributes(license_plate=plate)) is None:
+    #   return {'message': f'The {plate} plate is not exists'}, 404
+    # car = CarModel.find_by_attributes(license_plate=plate)
+    # car_positions = []
+    # for pos_data in PositionModel.query.all():
+    #   tmp_data = pos_data.json()
+    #   if car.id == tmp_data['car_id']:
+    #     lat = tmp_data['latitude']
+    #     long = tmp_data['longitude']
+    #     print(PositionModel.resolve_address(lat, long))
+    # return {'test': '58 Parker Street London'}
     if (CarModel.find_by_attributes(license_plate=plate)) is None:
       return {'message': f'The {plate} plate is not exists'}, 404
     car = CarModel.find_by_attributes(license_plate=plate)
@@ -27,9 +39,10 @@ class CarPosition(Resource):
         car_positions.append({
             'longitude': tmp_data['longitude'],
             'latitude': tmp_data['latitude'],
-            'date': tmp_data['date']
+            'date': tmp_data['date'],
+            'address': tmp_data['address']
         })
-    return {'car_positions': car_positions}
+    return {'positions': car_positions}
 
   def post(self, plate):
     if (CarModel.find_by_attributes(license_plate=plate)) is None:
